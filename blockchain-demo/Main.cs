@@ -23,6 +23,9 @@ namespace blockchain_demo
         Hashtable coins = new Hashtable();
         Hashtable deploys = new Hashtable();
 
+        string selected = "";
+        string directory = "";
+
         public Main()
         {
             InitializeComponent();
@@ -107,14 +110,14 @@ namespace blockchain_demo
                 case "set":
                     if (parameters.GetValue("type").ToString().Equals("total amount as"))
                     {
-                        SetTotalAmount(parameters.GetValue("coinname").ToString(), parameters.GetValue("amount").ToString());
+                        SetTotalAmount(selected, parameters.GetValue("amount").ToString());
                     }
                     else
                     {
                         SetUserBalance(parameters.GetValue("username").ToString(), parameters.GetValue("amont").ToString());
                     }
                     break;
-                case "deploy":
+                case "deploy project":
                     DeployProject();
                     break;
 
@@ -145,11 +148,13 @@ namespace blockchain_demo
             builder = new StringBuilder(deploy_code);
             builder.Replace("#coin_name#", coinname);
             deploys.Add(coinname, builder.ToString());
+
+            SelectCoin(coinname);
         }        
 
         void SelectCoin(String coinname)
         {
-
+            selected = coinname;
         }
 
         void SetTotalAmount(String coinname, string amount)
@@ -163,10 +168,57 @@ namespace blockchain_demo
 
         private void DeployProject()
         {
-            throw new NotImplementedException();
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            fbd.Description = "Please select a folder to save project!";
+
+
+            if (fbd.ShowDialog() == DialogResult.OK)
+            {
+                directory = fbd.SelectedPath;
+            }
+
+            String str = directory + @"\deployable";
+            MessageBox.Show(str);
+            if (!System.IO.Directory.Exists(str))  System.IO.Directory.CreateDirectory(str);
+            if (!System.IO.Directory.Exists(str + @"\contracts"))  System.IO.Directory.CreateDirectory(str + @"\contracts");
+            if (!System.IO.Directory.Exists(str + @"\migrations"))  System.IO.Directory.CreateDirectory(str + @"\migrations");
+
+            File.WriteAllText(str + @"\truffle-config.js", Resources.truffle_config);
+            File.WriteAllText(str + @"\package-lock.json", Resources.package_lock);
+            File.WriteAllText(str + @"\package.json", Resources.package);
+            File.WriteAllText(str + @"\bs-config.json", Resources.bs_config);
+            File.WriteAllText(str + @"\deploy.bat", Resources.deploy);
+            File.WriteAllText(str + @"\migrations\1_initial_migration.js", Resources.initial_migration);
+            File.WriteAllText(str + @"\contracts\Migrations.sol", Resources.migrations);
+
+            foreach (string k in coins.Keys)
+            {
+                File.WriteAllText(str + @"\contracts\" + k + ".sol", coins[k].ToString());
+            }
+
+            foreach (string k in deploys.Keys)
+            {
+                File.WriteAllText(str + @"\migrations\2_deploy_contracts.js", deploys[k].ToString());
+            }
+
+            Process process = null;
+            try
+            {
+                process = new Process();
+                process.StartInfo.WorkingDirectory = string.Format(str);
+                process.StartInfo.FileName = "deploy.bat";
+                process.StartInfo.CreateNoWindow = false;
+                process.Start();
+                process.WaitForExit();
+                MessageBox.Show("Contracts are deployed successfuly!");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.StackTrace.ToString());
+            }
         }
 
-        void CreateUser(String username)
+            void CreateUser(String username)
         {
         }
 

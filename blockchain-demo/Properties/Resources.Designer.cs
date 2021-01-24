@@ -61,6 +61,25 @@ namespace blockchain_demo.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {
+        ///  &quot;server&quot;: {
+        ///    &quot;baseDir&quot;: [
+        ///      &quot;./src&quot;,
+        ///      &quot;./build/contracts&quot;
+        ///    ],
+        ///    &quot;routes&quot;: {
+        ///      &quot;/vendor&quot;: &quot;./node_modules&quot;
+        ///    }
+        ///  }
+        ///}.
+        /// </summary>
+        public static string bs_config {
+            get {
+                return ResourceManager.GetString("bs_config", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to pragma solidity ^0.5.0;
         ///
         ///contract #coin_name# {
@@ -85,6 +104,16 @@ namespace blockchain_demo.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to start /wait cmd /k &quot;truffle compile &amp; exit&quot;
+        ///start /wait cmd /k &quot;truffle deploy &amp; exit&quot;.
+        /// </summary>
+        public static string deploy {
+            get {
+                return ResourceManager.GetString("deploy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to var #coin_name# = artifacts.require(&quot;./#coin_name#.sol&quot;);
         ///
         ///module.exports = function(deployer) {
@@ -94,6 +123,123 @@ namespace blockchain_demo.Properties {
         public static string deploy_source {
             get {
                 return ResourceManager.GetString("deploy_source", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to var Migrations = artifacts.require(&quot;./Migrations.sol&quot;);
+        ///
+        ///module.exports = function(deployer) {
+        ///  deployer.deploy(Migrations);
+        ///};.
+        /// </summary>
+        public static string initial_migration {
+            get {
+                return ResourceManager.GetString("initial_migration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pragma solidity &gt;=0.4.21 &lt;0.6.0;
+        ///
+        ///contract Migrations {
+        ///  address public owner;
+        ///  uint public last_completed_migration;
+        ///
+        ///  constructor() public {
+        ///    owner = msg.sender;
+        ///  }
+        ///
+        ///  modifier restricted() {
+        ///    if (msg.sender == owner) _;
+        ///  }
+        ///
+        ///  function setCompleted(uint completed) public restricted {
+        ///    last_completed_migration = completed;
+        ///  }
+        ///
+        ///  function upgrade(address new_address) public restricted {
+        ///    Migrations upgraded = Migrations(new_address);
+        ///    upgraded.setCompleted(last_compl [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string migrations {
+            get {
+                return ResourceManager.GetString("migrations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {
+        ///  &quot;name&quot;: &quot;Coin Generator&quot;,
+        ///  &quot;version&quot;: &quot;1.0.0&quot;,
+        ///  &quot;description&quot;: &quot;Blockchain Todo List Powered By Ethereum&quot;,
+        ///  &quot;main&quot;: &quot;truffle-config.js&quot;,
+        ///  &quot;directories&quot;: {
+        ///    &quot;test&quot;: &quot;test&quot;
+        ///  },
+        ///  &quot;scripts&quot;: {
+        ///    &quot;dev&quot;: &quot;lite-server&quot;,
+        ///    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; sexit 1&quot;
+        ///  },
+        ///  &quot;author&quot;: &quot;enes.kacan@agu.edu.tr&quot;,
+        ///  &quot;license&quot;: &quot;ISC&quot;,
+        ///  &quot;devDependencies&quot;: {
+        ///    &quot;bootstrap&quot;: &quot;4.1.3&quot;,
+        ///    &quot;chai&quot;: &quot;^4.1.2&quot;,
+        ///    &quot;chai-as-promised&quot;: &quot;^7.1.1&quot;,
+        ///    &quot;chai-bignumber&quot;: &quot;^2.0.2&quot;,
+        ///    &quot;li [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string package {
+            get {
+                return ResourceManager.GetString("package", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {
+        ///  &quot;name&quot;: &quot;eth-todo-list&quot;,
+        ///  &quot;version&quot;: &quot;1.0.0&quot;,
+        ///  &quot;lockfileVersion&quot;: 1,
+        ///  &quot;requires&quot;: true,
+        ///  &quot;dependencies&quot;: {
+        ///    &quot;abbrev&quot;: {
+        ///      &quot;version&quot;: &quot;1.1.1&quot;,
+        ///      &quot;resolved&quot;: &quot;https://registry.npmjs.org/abbrev/-/abbrev-1.1.1.tgz&quot;,
+        ///      &quot;integrity&quot;: &quot;sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==&quot;,
+        ///      &quot;dev&quot;: true
+        ///    },
+        ///    &quot;accepts&quot;: {
+        ///      &quot;version&quot;: &quot;1.3.5&quot;,
+        ///      &quot;resolved&quot;: &quot;https://registry.npmjs.org/accepts/-/accepts-1.3.5.tgz&quot;,
+        ///     [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string package_lock {
+            get {
+                return ResourceManager.GetString("package_lock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to module.exports = {
+        ///  networks: {
+        ///    development: {
+        ///      host: &quot;127.0.0.1&quot;,
+        ///      port: 7545,
+        ///      network_id: &quot;*&quot; // Match any network id
+        ///    }
+        ///  },
+        ///  solc: {
+        ///    optimizer: {
+        ///      enabled: true,
+        ///      runs: 200
+        ///    }
+        ///  }
+        ///}.
+        /// </summary>
+        public static string truffle_config {
+            get {
+                return ResourceManager.GetString("truffle_config", resourceCulture);
             }
         }
     }
