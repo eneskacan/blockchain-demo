@@ -1,4 +1,8 @@
-﻿using System;
+﻿using blockchain_demo.Properties;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -6,6 +10,8 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,14 +20,27 @@ namespace blockchain_demo
 {
     public partial class Main : Form
     {
+        Hashtable coins = new Hashtable();
+        Hashtable deploys = new Hashtable();
 
         public Main()
         {
             InitializeComponent();
         }
 
-        private void OnInputChanged(object sender, EventArgs e)
+        private void OnInput(object sender, KeyEventArgs e)
         {
+            if (e.KeyCode == Keys.Enter)
+            {
+                var input = ParseInput(txt_Input.Text);
+
+                StringBuilder builder = new StringBuilder(input);
+                builder.Replace("None", "'null'");
+                var objects = JObject.Parse(builder.ToString());
+
+                Execute(objects);  
+            }
+
             try
             {
                 lbl_Error.Text = ParseInput(txt_Input.Text);
@@ -65,5 +84,38 @@ namespace blockchain_demo
 
             return output;
         }
+
+        void Execute(JObject parameters)
+        {
+            switch(parameters.GetValue("command").ToString())
+            {
+                case "create":
+                    CreateCoin(parameters.GetValue("coinname").ToString());
+                    break;
+            }
+        }
+
+        void CreateCoin(String coinname)
+        {
+            string coin_code = Resources.coin_source;
+            string deploy_code = Resources.deploy_source;
+
+            StringBuilder builder = new StringBuilder(coin_code);
+            builder.Replace("#coin_name#", coinname);
+            coins.Add(coinname, builder.ToString());
+
+            builder = new StringBuilder(deploy_code);
+            builder.Replace("#coin_name#", coinname);
+            deploys.Add(coinname, builder.ToString());
+        }
+
+        void SetTotalAmount(String coinname, double amount)
+        {
+            string coin_code = coins[coinname].ToString();
+
+            StringBuilder builder = new StringBuilder(coin_code);
+            builder.Replace("#total_amount#", amount.ToString());
+            coins[coinname] = builder.ToString();
+        }   
     }
 }

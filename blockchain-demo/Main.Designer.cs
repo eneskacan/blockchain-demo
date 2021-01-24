@@ -54,7 +54,7 @@
             this.txt_Input.ShadowDecoration.Parent = this.txt_Input;
             this.txt_Input.Size = new System.Drawing.Size(652, 36);
             this.txt_Input.TabIndex = 0;
-            this.txt_Input.TextChanged += new System.EventHandler(this.OnInputChanged);
+            this.txt_Input.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OnInput);
             // 
             // lbl_Error
             // 
@@ -65,14 +65,14 @@
             this.lbl_Error.TabIndex = 1;
             this.lbl_Error.Text = "label1";
             // 
-            // Form1
+            // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.lbl_Error);
             this.Controls.Add(this.txt_Input);
-            this.Name = "Form1";
+            this.Name = "Main";
             this.Text = "Form1";
             this.ResumeLayout(false);
             this.PerformLayout();
