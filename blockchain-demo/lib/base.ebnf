@@ -1,0 +1,43 @@
+@@grammar::BAAS
+@@ignorecase::True
+start = statement $ ;
+statement
+    =
+    create | select | set | deploy | get | transfer | exit 
+    ;
+create
+	=
+	command:'create' type:'coin' coinname:string | command:'create' type:'user' username:string
+	;
+select
+	=
+	command:'select' coinname:string
+	;
+set
+	=
+	command:'set' type:'total amount as' amount:number | command:'set' type:'balance of' username:string 'as' amount:number
+	;
+deploy
+	=
+	command:'deploy project' | command:'deploy' coinname:string
+	;
+get
+	=
+	command:'get balance of' username:string
+	;
+transfer
+	=
+	command:'transfer' amount:number coinname:string 'from' sender:string 'to' receiver:string
+	;
+exit
+	=
+	command:'exit'
+	;
+number
+    =
+    /\d+/
+    ;
+string
+	=
+	/[\w\.-]+/
+	;

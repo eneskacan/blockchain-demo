@@ -87,26 +87,116 @@ class BAASParser(Parser):
 
     @tatsumasu()
     def _statement_(self):  # noqa
-        self._command_()
-        self.name_last_node('command')
+        with self._choice():
+            with self._option():
+                self._create_()
+            with self._option():
+                self._select_()
+            with self._option():
+                self._set_()
+            with self._option():
+                self._deploy_()
+            with self._option():
+                self._get_()
+            with self._option():
+                self._transfer_()
+            with self._option():
+                self._exit_()
+            self._error('expecting one of: create deploy deploy project exit get get balance of select set transfer')
+
+    @tatsumasu()
+    def _create_(self):  # noqa
+        with self._choice():
+            with self._option():
+                self._token('create')
+                self.name_last_node('command')
+                self._token('coin')
+                self.name_last_node('type')
+                self._string_()
+                self.name_last_node('coinname')
+            with self._option():
+                self._token('create')
+                self.name_last_node('command')
+                self._token('user')
+                self.name_last_node('type')
+                self._string_()
+                self.name_last_node('username')
+            self._error('expecting one of: create')
         self.ast._define(
-            ['command'],
+            ['coinname', 'command', 'type', 'username'],
             []
         )
 
     @tatsumasu()
-    def _command_(self):  # noqa
+    def _select_(self):  # noqa
+        self._token('select')
+        self.name_last_node('command')
+        self._string_()
+        self.name_last_node('coinname')
+        self.ast._define(
+            ['coinname', 'command'],
+            []
+        )
+
+    @tatsumasu()
+    def _set_(self):  # noqa
         with self._choice():
             with self._option():
-                self._transfer_()
+                self._token('set')
+                self.name_last_node('command')
+                self._token('total amount as')
+                self.name_last_node('type')
+                self._number_()
+                self.name_last_node('amount')
             with self._option():
-                self._create_()
-            self._error('expecting one of: create transfer')
+                self._token('set')
+                self.name_last_node('command')
+                self._token('balance of')
+                self.name_last_node('type')
+                self._string_()
+                self.name_last_node('username')
+                self._token('as')
+                self._number_()
+                self.name_last_node('amount')
+            self._error('expecting one of: set')
+        self.ast._define(
+            ['amount', 'command', 'type', 'username'],
+            []
+        )
+
+    @tatsumasu()
+    def _deploy_(self):  # noqa
+        with self._choice():
+            with self._option():
+                self._token('deploy project')
+                self.name_last_node('command')
+            with self._option():
+                self._token('deploy')
+                self.name_last_node('command')
+                self._string_()
+                self.name_last_node('coinname')
+            self._error('expecting one of: deploy deploy project')
+        self.ast._define(
+            ['coinname', 'command'],
+            []
+        )
+
+    @tatsumasu()
+    def _get_(self):  # noqa
+        self._token('get balance of')
+        self.name_last_node('command')
+        self._string_()
+        self.name_last_node('username')
+        self.ast._define(
+            ['command', 'username'],
+            []
+        )
 
     @tatsumasu()
     def _transfer_(self):  # noqa
         self._token('transfer')
-        self._amount_()
+        self.name_last_node('command')
+        self._number_()
         self.name_last_node('amount')
         self._string_()
         self.name_last_node('coinname')
@@ -117,33 +207,16 @@ class BAASParser(Parser):
         self._string_()
         self.name_last_node('receiver')
         self.ast._define(
-            ['amount', 'coinname', 'receiver', 'sender'],
+            ['amount', 'coinname', 'command', 'receiver', 'sender'],
             []
         )
 
     @tatsumasu()
-    def _amount_(self):  # noqa
-        self._number_()
-
-    @tatsumasu()
-    def _create_(self):  # noqa
-        self._token('create')
-        self._type_()
-
-    @tatsumasu()
-    def _type_(self):  # noqa
-        with self._choice():
-            with self._option():
-                self._token('coin')
-                self._string_()
-                self.name_last_node('coinname')
-            with self._option():
-                self._token('user')
-                self._string_()
-                self.name_last_node('username')
-            self._error('expecting one of: coin user')
+    def _exit_(self):  # noqa
+        self._token('exit')
+        self.name_last_node('command')
         self.ast._define(
-            ['coinname', 'username'],
+            ['command'],
             []
         )
 
@@ -163,19 +236,25 @@ class BAASSemantics(object):
     def statement(self, ast):  # noqa
         return ast
 
-    def command(self, ast):  # noqa
+    def create(self, ast):  # noqa
+        return ast
+
+    def select(self, ast):  # noqa
+        return ast
+
+    def set(self, ast):  # noqa
+        return ast
+
+    def deploy(self, ast):  # noqa
+        return ast
+
+    def get(self, ast):  # noqa
         return ast
 
     def transfer(self, ast):  # noqa
         return ast
 
-    def amount(self, ast):  # noqa
-        return ast
-
-    def create(self, ast):  # noqa
-        return ast
-
-    def type(self, ast):  # noqa
+    def exit(self, ast):  # noqa
         return ast
 
     def number(self, ast):  # noqa
