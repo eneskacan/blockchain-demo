@@ -22,7 +22,7 @@ namespace blockchain_demo.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace blockchain_demo.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("blockchain_demo.Properties.Resources", typeof(Resources).Assembly);
@@ -51,12 +51,49 @@ namespace blockchain_demo.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pragma solidity ^0.5.0;
+        ///
+        ///contract #coin_name# {
+        ///    mapping (address =&gt; uint) balances;
+        ///
+        ///    event Transfer(address indexed _from, address indexed _to, uint256 _value);
+        ///
+        ///    constructor() public {
+        ///        balances[tx.origin] = #total_amount# ;
+        ///    }
+        ///
+        ///    function sendCoin(address receiver, uint amount) public returns(bool sufficient) {
+        ///        if (balances[msg.sender] &lt; amount) return false;
+        ///        balances[msg.sender] -= amount;
+        ///        balances[receiver] += amount;
+        ///        emit Transfer(ms [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string coin_source {
+            get {
+                return ResourceManager.GetString("coin_source", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to var #coin_name# = artifacts.require(&quot;./#coin_name#.sol&quot;);
+        ///
+        ///module.exports = function(deployer) {
+        ///  deployer.deploy(#coin_name#);
+        ///};.
+        /// </summary>
+        public static string deploy_source {
+            get {
+                return ResourceManager.GetString("deploy_source", resourceCulture);
             }
         }
     }
