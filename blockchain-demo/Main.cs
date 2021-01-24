@@ -90,7 +90,45 @@ namespace blockchain_demo
             switch(parameters.GetValue("command").ToString())
             {
                 case "create":
-                    CreateCoin(parameters.GetValue("coinname").ToString());
+                    if(parameters.GetValue("type").ToString().Equals("coin")) 
+                    { 
+                        CreateCoin(parameters.GetValue("coinname").ToString()); 
+                    }
+                    else 
+                    { 
+                        CreateUser(parameters.GetValue("username").ToString()); 
+                    }                    
+                    break;
+
+                case "select":
+                    SelectCoin(parameters.GetValue("coinname").ToString());
+                    break;
+
+                case "set":
+                    if (parameters.GetValue("type").ToString().Equals("total amount as"))
+                    {
+                        SetTotalAmount(parameters.GetValue("coinname").ToString(), parameters.GetValue("amount").ToString());
+                    }
+                    else
+                    {
+                        SetUserBalance(parameters.GetValue("username").ToString(), parameters.GetValue("amont").ToString());
+                    }
+                    break;
+                case "deploy":
+                    DeployProject();
+                    break;
+
+                case "get balance of":
+                    GetUserBalance(parameters.GetValue("username").ToString());
+                    break;
+
+                case "transfer":
+                    Transfer(parameters.GetValue("coinname").ToString(), parameters.GetValue("amount").ToString(),
+                        parameters.GetValue("sender").ToString(), parameters.GetValue("receiver").ToString());
+                    break;
+
+                case "exit":
+                    Exit();
                     break;
             }
         }
@@ -107,15 +145,49 @@ namespace blockchain_demo
             builder = new StringBuilder(deploy_code);
             builder.Replace("#coin_name#", coinname);
             deploys.Add(coinname, builder.ToString());
+        }        
+
+        void SelectCoin(String coinname)
+        {
+
         }
 
-        void SetTotalAmount(String coinname, double amount)
+        void SetTotalAmount(String coinname, string amount)
         {
             string coin_code = coins[coinname].ToString();
 
             StringBuilder builder = new StringBuilder(coin_code);
-            builder.Replace("#total_amount#", amount.ToString());
+            builder.Replace("#total_amount#", amount);
             coins[coinname] = builder.ToString();
-        }   
+        }
+
+        private void DeployProject()
+        {
+            throw new NotImplementedException();
+        }
+
+        void CreateUser(String username)
+        {
+        }
+
+        private void SetUserBalance(string username, string amount)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void GetUserBalance(string username)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Transfer(string coinname, string amount, string sender, string receiver)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Exit()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
