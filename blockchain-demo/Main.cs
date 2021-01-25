@@ -232,6 +232,7 @@ namespace blockchain_demo
                 process.WaitForExit();
                 isDeployed = true;
                 GetCoinInfo();
+                SetBase();
                 MessageBox.Show("Contracts are deployed successfuly!");
             }
             catch (Exception ex)
@@ -296,14 +297,10 @@ namespace blockchain_demo
         }
 
         void GetCoinInfo()
-        {
-            //test
-            isDeployed = true;
+        {            
             if(isDeployed)
             {
-                //string file = @"\build\contracts\" + selected + ".json";
-                string file = @"\build\contracts\" + "Enes" + ".json";
-                directory = @"C:\Users\eneskacan\Desktop\deployable";
+                string file = @"\build\contracts\" + selected + ".json";
 
                 // Create Process Info
                 var psi = new ProcessStartInfo();
