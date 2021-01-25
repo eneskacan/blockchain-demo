@@ -19,6 +19,7 @@ using System.Windows.Forms;
 using Nethereum.Contracts;
 using Nethereum.Hex.HexTypes;
 using System.Numerics;
+using System.Text.RegularExpressions;
 
 namespace blockchain_demo
 {
@@ -63,7 +64,8 @@ namespace blockchain_demo
             }
             catch (Exception exception)
             {
-                lbl_Error.Text = exception.Message;
+                int index = Regex.Match(exception.ToString(), @"::-(.+?)-::").Groups.Count - 1;
+                lbl_Error.Text = Regex.Match(exception.ToString(), @"::-(.+?)-::").Groups[index].Value + $" ({(index + 1)})";
             }
         }
 

@@ -104,7 +104,7 @@ class BAASParser(Parser):
                 self._exit_()
             with self._option():
                 self._help_()
-            self._error('expecting one of: create deploy deploy project exit get get balance of help select set transfer')
+            self._error('::-expecting one of: create deploy deploy project exit get get balance of help select set transfer-::')
 
     @tatsumasu()
     def _create_(self):  # noqa
@@ -123,7 +123,7 @@ class BAASParser(Parser):
                 self.name_last_node('type')
                 self._string_()
                 self.name_last_node('username')
-            self._error('expecting one of: create')
+            self._error('::-expecting one of: create-::')
         self.ast._define(
             ['coinname', 'command', 'type', 'username'],
             []
@@ -160,7 +160,7 @@ class BAASParser(Parser):
                 self._token('as')
                 self._number_()
                 self.name_last_node('amount')
-            self._error('expecting one of: set')
+            self._error('::-expecting one of: set-::')
         self.ast._define(
             ['amount', 'command', 'type', 'username'],
             []
@@ -177,7 +177,7 @@ class BAASParser(Parser):
                 self.name_last_node('command')
                 self._string_()
                 self.name_last_node('coinname')
-            self._error('expecting one of: deploy deploy project')
+            self._error('::-expecting one of: deploy deploy project-::')
         self.ast._define(
             ['coinname', 'command'],
             []
