@@ -1,4 +1,5 @@
 ﻿using blockchain_demo.Properties;
+using Nethereum.Web3;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -15,6 +16,9 @@ using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Nethereum.Contracts;
+using Nethereum.Hex.HexTypes;
+using System.Numerics;
 
 namespace blockchain_demo
 {
@@ -23,12 +27,18 @@ namespace blockchain_demo
         Hashtable coins = new Hashtable();
         Hashtable deploys = new Hashtable();
 
+        Hashtable users = new Hashtable();
+
         string selected = "";
         string directory = "";
 
+        string abi = "";
+        string bytecode = "";
+
         public Main()
         {
-            InitializeComponent();
+            InitializeComponent(); 
+            GetCoinInfo(); GetUserBalance("");
         }
 
         private void OnInput(object sender, KeyEventArgs e)
@@ -36,6 +46,7 @@ namespace blockchain_demo
             if (e.KeyCode == Keys.Enter)
             {
                 var input = ParseInput(txt_Input.Text);
+                txt_Input.Text = "";
 
                 StringBuilder builder = new StringBuilder(input);
                 builder.Replace("None", "'null'");
@@ -178,6 +189,7 @@ namespace blockchain_demo
             }
 
             String str = directory + @"\deployable";
+            directory = str;
             MessageBox.Show(str);
             if (!System.IO.Directory.Exists(str))  System.IO.Directory.CreateDirectory(str);
             if (!System.IO.Directory.Exists(str + @"\contracts"))  System.IO.Directory.CreateDirectory(str + @"\contracts");
@@ -208,6 +220,7 @@ namespace blockchain_demo
                 process.StartInfo.WorkingDirectory = string.Format(str);
                 process.StartInfo.FileName = "deploy.bat";
                 process.StartInfo.CreateNoWindow = false;
+                process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                 process.Start();
                 process.WaitForExit();
                 MessageBox.Show("Contracts are deployed successfuly!");
@@ -218,8 +231,9 @@ namespace blockchain_demo
             }
         }
 
-            void CreateUser(String username)
+        void CreateUser(String username)
         {
+
         }
 
         private void SetUserBalance(string username, string amount)
@@ -227,9 +241,18 @@ namespace blockchain_demo
             throw new NotImplementedException();
         }
 
-        private void GetUserBalance(string username)
+        async void GetUserBalance(string username)
         {
-            throw new NotImplementedException();
+            string url = "HTTP://localhost:7545";
+
+            Web3 web3 = new Web3(url);
+            Contract contract = web3.Eth.GetContract(abi, bytecode);
+
+            object[] param = new object[1] { "0x4820c027A5B18Df571b69942b17B8Fb21C055824" };
+
+            var balance = await web3.Eth.GetBalance.SendRequestAsync("0x320C80215d32a62a4d97B830d3F57D0bF1717192");
+            var etherAmount = Web3.Convert.FromWei(balance.Value);
+            MessageBox.Show(etherAmount.ToString());
         }
 
         private void Transfer(string coinname, string amount, string sender, string receiver)
@@ -240,6 +263,62 @@ namespace blockchain_demo
         private void Exit()
         {
             throw new NotImplementedException();
+        }
+
+        void GetCoinInfo()
+        {
+            directory = @"C:\Users\eneskacan\Desktop\deployable";
+            string file = @"\build\contracts\ecoin.json";
+
+            // Create Process Info
+            var psi = new ProcessStartInfo();
+            psi.FileName = @"C:\Users\eneskacan\anaconda3\python.exe";
+
+            // Provide script and arguments
+            var script = string.Format("{0}lib\\get_coin_info.py", Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\")));
+            psi.Arguments = $"\"{script}\" \"{directory}\" \"{file}\"";
+
+            // Process configuration
+            psi.UseShellExecute = false;
+            psi.CreateNoWindow = true;
+            psi.RedirectStandardOutput = true;
+            psi.RedirectStandardError = true;
+
+            // Execute process and get output
+            var errors = "";
+            var output = "";
+
+            using (var process = Process.Start(psi))
+            {
+                string standard_output;
+                while ((standard_output = process.StandardOutput.ReadLine()) != null)
+                {
+                    if(output.Length == 0)
+                    {
+                        output = standard_output;
+                    }
+                    else if (bytecode.Length == 0)
+                    {
+                        bytecode = standard_output;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+
+            if (errors.Length != 0)
+            {
+                throw new Exception(errors);
+            }
+
+            StringBuilder builder = new StringBuilder(output);
+            builder.Replace("None", "'null'");
+            builder.Replace("False", "false");
+            builder.Replace("True", "true");
+
+            abi = JArray.Parse(builder.ToString()).ToString();
         }
     }
 }
