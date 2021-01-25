@@ -39,10 +39,20 @@ namespace blockchain_demo
         string python = @"C:\Users\eneskacan\anaconda3\python.exe";
 
         bool isDeployed = false;
+        bool debugMode = false;
 
         public Main()
         {
             InitializeComponent();
+
+            if(debugMode)
+            {
+                isDeployed = true;
+                selected = "Enes";
+                directory = @"C:\Users\eneskacan\Desktop\deployable";
+                GetCoinInfo();
+                SetBase();
+            }
         }
 
         private void OnInputChanged(object sender, EventArgs e)
@@ -132,7 +142,7 @@ namespace blockchain_demo
                     }
                     else
                     {
-                        SetUserBalance(parameters.GetValue("username").ToString(), parameters.GetValue("amont").ToString());
+                        SetUserBalance(parameters.GetValue("username").ToString(), parameters.GetValue("amount").ToString());
                     }
                     break;
                 case "deploy project":
@@ -244,11 +254,15 @@ namespace blockchain_demo
         void SetBase()
         {
             users.Add("base", "0x6953ebf1222Dab5dfD3C17F5BeC3E96119Bd27CA");
+
+            UpdateAccountsList();
         }
 
         void CreateUser(String username)
         {
             users.Add(username, CreateNewEthereumAddressAsync("pass"));
+
+            UpdateAccountsList();
         }
 
         public String CreateNewEthereumAddressAsync(string password)
@@ -266,9 +280,11 @@ namespace blockchain_demo
             Web3 web3 = new Web3(url);
 
             Transfer(amount, "base", username);
+
+            UpdateAccountsList();
         }
 
-        async void GetUserBalance(string username)
+        string GetUserBalance(string username)
         {
             Web3 web3 = new Web3(url);
             Contract contract = web3.Eth.GetContract(abi, bytecode);
@@ -277,7 +293,7 @@ namespace blockchain_demo
             var result = getUserAtIndex.CallAsync<BigInteger>(users[username]);
             result.Wait();
 
-            MessageBox.Show($"Total balance of {username} is {result.Result.ToString()}");            
+            return result.Result.ToString();
         }
 
         private void Transfer(string amount, string sender, string receiver)
@@ -289,6 +305,8 @@ namespace blockchain_demo
             HexBigInteger value = new HexBigInteger(new BigInteger(0));
             Task<string> castVoteFunction = contract.GetFunction("sendCoin").SendTransactionAsync(users[sender].ToString(), gas, value, users[receiver], Int32.Parse(amount));
             castVoteFunction.Wait();
+
+            UpdateAccountsList();
         }
 
         private void Exit()
@@ -351,6 +369,17 @@ namespace blockchain_demo
                 builder.Replace("True", "true");
 
                 abi = JArray.Parse(builder.ToString()).ToString();
+            }
+        }
+        
+        void UpdateAccountsList()
+        {
+            pnl_Accounts.Controls.Clear();
+
+            foreach (string k in users.Keys)
+            {
+                Account account = new Account(k, users[k].ToString(), GetUserBalance(k), selected);
+                pnl_Accounts.Controls.Add(account);
             }
         }
     }

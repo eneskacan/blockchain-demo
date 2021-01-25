@@ -30,6 +30,7 @@
         {
             this.txt_Input = new Guna.UI2.WinForms.Guna2TextBox();
             this.lbl_Error = new System.Windows.Forms.Label();
+            this.pnl_Accounts = new System.Windows.Forms.FlowLayoutPanel();
             this.SuspendLayout();
             // 
             // txt_Input
@@ -46,13 +47,13 @@
             this.txt_Input.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txt_Input.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.txt_Input.HoverState.Parent = this.txt_Input;
-            this.txt_Input.Location = new System.Drawing.Point(243, 70);
+            this.txt_Input.Location = new System.Drawing.Point(218, 31);
             this.txt_Input.Name = "txt_Input";
             this.txt_Input.PasswordChar = '\0';
             this.txt_Input.PlaceholderText = "";
             this.txt_Input.SelectedText = "";
             this.txt_Input.ShadowDecoration.Parent = this.txt_Input;
-            this.txt_Input.Size = new System.Drawing.Size(479, 36);
+            this.txt_Input.Size = new System.Drawing.Size(570, 36);
             this.txt_Input.TabIndex = 0;
             this.txt_Input.TextChanged += new System.EventHandler(this.OnInputChanged);
             this.txt_Input.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OnInputCompleted);
@@ -60,17 +61,26 @@
             // lbl_Error
             // 
             this.lbl_Error.AutoSize = true;
-            this.lbl_Error.Location = new System.Drawing.Point(240, 109);
+            this.lbl_Error.Location = new System.Drawing.Point(411, 200);
             this.lbl_Error.Name = "lbl_Error";
             this.lbl_Error.Size = new System.Drawing.Size(35, 13);
             this.lbl_Error.TabIndex = 1;
             this.lbl_Error.Text = "label1";
+            // 
+            // pnl_Accounts
+            // 
+            this.pnl_Accounts.AutoScroll = true;
+            this.pnl_Accounts.Location = new System.Drawing.Point(4, 31);
+            this.pnl_Accounts.Name = "pnl_Accounts";
+            this.pnl_Accounts.Size = new System.Drawing.Size(208, 324);
+            this.pnl_Accounts.TabIndex = 27;
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.pnl_Accounts);
             this.Controls.Add(this.lbl_Error);
             this.Controls.Add(this.txt_Input);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -85,6 +95,7 @@
 
         private Guna.UI2.WinForms.Guna2TextBox txt_Input;
         private System.Windows.Forms.Label lbl_Error;
+        public System.Windows.Forms.FlowLayoutPanel pnl_Accounts;
     }
 }
 
