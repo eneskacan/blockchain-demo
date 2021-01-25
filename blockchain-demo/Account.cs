@@ -18,7 +18,7 @@ namespace blockchain_demo
             InitializeComponent();
 
             lbl_Username.Text = username;
-            lbl_Balance.Text = $"{balance} {coinname}";
+            lbl_Balance.Text = $"{balance} {coinname.ToUpper()}";
 
             this.address = address;
         }
@@ -26,7 +26,7 @@ namespace blockchain_demo
         private void OnCopyPressed(object sender, EventArgs e)
         {
             System.Windows.Forms.Clipboard.SetText(this.address);
-            MessageBox.Show(this.address, "Demo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(this.address, "", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

@@ -39,8 +39,10 @@ namespace blockchain_demo
 
         string python = @"C:\Users\eneskacan\anaconda3\python.exe";
 
+        string address = "0x6953ebf1222Dab5dfD3C17F5BeC3E96119Bd27CA";
+
         bool isDeployed = false;
-        bool debugMode = true;
+        bool debugMode = false;
 
         public Main()
         {
@@ -49,7 +51,7 @@ namespace blockchain_demo
             if(debugMode)
             {
                 isDeployed = true;
-                selected = "Enes";
+                selected = "btc";
                 directory = @"C:\Users\eneskacan\Desktop\deployable";
                 GetCoinInfo();
                 SetBase();
@@ -61,11 +63,13 @@ namespace blockchain_demo
             try
             {
                 lbl_Error.Text = ParseInput(txt_Input.Text);
+                txt_Input.BorderColor = Color.Green;
             }
             catch (Exception exception)
             {
                 int index = Regex.Match(exception.ToString(), @"::-(.+?)-::").Groups.Count - 1;
                 lbl_Error.Text = Regex.Match(exception.ToString(), @"::-(.+?)-::").Groups[index].Value + $" ({(index + 1)})";
+                txt_Input.BorderColor = Color.Red;
             }
         }
 
@@ -152,7 +156,9 @@ namespace blockchain_demo
                     break;
 
                 case "get balance of":
-                    GetUserBalance(parameters.GetValue("username").ToString());
+                    var balance = GetUserBalance(parameters.GetValue("username").ToString());
+                    MessageBox.Show($"Total balance of {parameters.GetValue("username")} is {balance} {selected.ToUpper()}.", 
+                        "", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     break;
 
                 case "transfer":
@@ -213,7 +219,6 @@ namespace blockchain_demo
 
             String str = directory + @"\deployable";
             directory = str;
-            MessageBox.Show(str);
             if (!System.IO.Directory.Exists(str))  System.IO.Directory.CreateDirectory(str);
             if (!System.IO.Directory.Exists(str + @"\contracts"))  System.IO.Directory.CreateDirectory(str + @"\contracts");
             if (!System.IO.Directory.Exists(str + @"\migrations"))  System.IO.Directory.CreateDirectory(str + @"\migrations");
@@ -249,7 +254,7 @@ namespace blockchain_demo
                 isDeployed = true;
                 GetCoinInfo();
                 SetBase();
-                MessageBox.Show("Contracts are deployed successfuly!");
+                MessageBox.Show("Contracts are deployed successfuly!", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
@@ -259,7 +264,7 @@ namespace blockchain_demo
 
         void SetBase()
         {
-            users.Add("base", "0x6953ebf1222Dab5dfD3C17F5BeC3E96119Bd27CA");
+            users.Add("base", address);
 
             UpdateAccountsList();
         }
@@ -322,7 +327,7 @@ namespace blockchain_demo
 
         private void Help()
         {
-
+            lbl_Error.Text = "Help message here :)";
         }
 
         void GetCoinInfo()
@@ -392,6 +397,29 @@ namespace blockchain_demo
                 Account account = new Account(k, users[k].ToString(), GetUserBalance(k), selected);
                 pnl_Accounts.Controls.Add(account);
             }
+        }
+
+        private void OnInputFocus(object sender, EventArgs e)
+        {
+            txt_Input.BorderColor = txt_Input.BorderColor;
+        }
+
+        private void OnPythonClick(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "(python.exe)|python.exe";
+            openFileDialog.FilterIndex = 1;
+            openFileDialog.RestoreDirectory = true;
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                python = openFileDialog.FileName;
+            }
+        }
+
+        private void OnAddressClick(object sender, EventArgs e)
+        {
+            address = Clipboard.GetText();
         }
     }
 }
