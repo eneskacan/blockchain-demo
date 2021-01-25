@@ -39,7 +39,7 @@ namespace blockchain_demo
         string python = @"C:\Users\eneskacan\anaconda3\python.exe";
 
         bool isDeployed = false;
-        bool debugMode = false;
+        bool debugMode = true;
 
         public Main()
         {
@@ -159,6 +159,10 @@ namespace blockchain_demo
 
                 case "exit":
                     Exit();
+                    break;
+
+                case "help":
+                    Help();
                     break;
             }
         }
@@ -312,6 +316,11 @@ namespace blockchain_demo
         private void Exit()
         {
             Environment.Exit(0);
+        }
+
+        private void Help()
+        {
+
         }
 
         void GetCoinInfo()

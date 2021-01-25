@@ -102,7 +102,9 @@ class BAASParser(Parser):
                 self._transfer_()
             with self._option():
                 self._exit_()
-            self._error('expecting one of: create deploy deploy project exit get get balance of select set transfer')
+            with self._option():
+                self._help_()
+            self._error('expecting one of: create deploy deploy project exit get get balance of help select set transfer')
 
     @tatsumasu()
     def _create_(self):  # noqa
@@ -221,6 +223,15 @@ class BAASParser(Parser):
         )
 
     @tatsumasu()
+    def _help_(self):  # noqa
+        self._token('help')
+        self.name_last_node('command')
+        self.ast._define(
+            ['command'],
+            []
+        )
+
+    @tatsumasu()
     def _number_(self):  # noqa
         self._pattern('\\d+')
 
@@ -255,6 +266,9 @@ class BAASSemantics(object):
         return ast
 
     def exit(self, ast):  # noqa
+        return ast
+
+    def help(self, ast):  # noqa
         return ast
 
     def number(self, ast):  # noqa

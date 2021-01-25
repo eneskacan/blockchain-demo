@@ -3,7 +3,7 @@
 start = statement $ ;
 statement
     =
-    create | select | set | deploy | get | transfer | exit 
+    create | select | set | deploy | get | transfer | exit | help
     ;
 create
 	=
@@ -32,6 +32,10 @@ transfer
 exit
 	=
 	command:'exit'
+	;
+help
+	=
+	command:'help'
 	;
 number
     =

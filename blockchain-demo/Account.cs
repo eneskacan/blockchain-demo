@@ -26,7 +26,7 @@ namespace blockchain_demo
         private void OnCopyPressed(object sender, EventArgs e)
         {
             System.Windows.Forms.Clipboard.SetText(this.address);
-            MessageBox.Show("Account address copied to clipboard!", "Demo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(this.address, "Demo", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

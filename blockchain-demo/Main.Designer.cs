@@ -31,6 +31,7 @@
             this.txt_Input = new Guna.UI2.WinForms.Guna2TextBox();
             this.lbl_Error = new System.Windows.Forms.Label();
             this.pnl_Accounts = new System.Windows.Forms.FlowLayoutPanel();
+            this.lbl_Help = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // txt_Input
@@ -61,7 +62,7 @@
             // lbl_Error
             // 
             this.lbl_Error.AutoSize = true;
-            this.lbl_Error.Location = new System.Drawing.Point(411, 200);
+            this.lbl_Error.Location = new System.Drawing.Point(227, 70);
             this.lbl_Error.Name = "lbl_Error";
             this.lbl_Error.Size = new System.Drawing.Size(35, 13);
             this.lbl_Error.TabIndex = 1;
@@ -75,11 +76,21 @@
             this.pnl_Accounts.Size = new System.Drawing.Size(208, 324);
             this.pnl_Accounts.TabIndex = 27;
             // 
+            // lbl_Help
+            // 
+            this.lbl_Help.AutoSize = true;
+            this.lbl_Help.Location = new System.Drawing.Point(383, 15);
+            this.lbl_Help.Name = "lbl_Help";
+            this.lbl_Help.Size = new System.Drawing.Size(221, 13);
+            this.lbl_Help.TabIndex = 28;
+            this.lbl_Help.Text = "Please type Help to see available commands.";
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.lbl_Help);
             this.Controls.Add(this.pnl_Accounts);
             this.Controls.Add(this.lbl_Error);
             this.Controls.Add(this.txt_Input);
@@ -96,6 +107,7 @@
         private Guna.UI2.WinForms.Guna2TextBox txt_Input;
         private System.Windows.Forms.Label lbl_Error;
         public System.Windows.Forms.FlowLayoutPanel pnl_Accounts;
+        private System.Windows.Forms.Label lbl_Help;
     }
 }
 
