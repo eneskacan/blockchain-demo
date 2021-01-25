@@ -46,20 +46,21 @@
             this.txt_Input.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txt_Input.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.txt_Input.HoverState.Parent = this.txt_Input;
-            this.txt_Input.Location = new System.Drawing.Point(70, 70);
+            this.txt_Input.Location = new System.Drawing.Point(243, 70);
             this.txt_Input.Name = "txt_Input";
             this.txt_Input.PasswordChar = '\0';
             this.txt_Input.PlaceholderText = "";
             this.txt_Input.SelectedText = "";
             this.txt_Input.ShadowDecoration.Parent = this.txt_Input;
-            this.txt_Input.Size = new System.Drawing.Size(652, 36);
+            this.txt_Input.Size = new System.Drawing.Size(479, 36);
             this.txt_Input.TabIndex = 0;
-            this.txt_Input.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OnInput);
+            this.txt_Input.TextChanged += new System.EventHandler(this.OnInputChanged);
+            this.txt_Input.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OnInputCompleted);
             // 
             // lbl_Error
             // 
             this.lbl_Error.AutoSize = true;
-            this.lbl_Error.Location = new System.Drawing.Point(67, 109);
+            this.lbl_Error.Location = new System.Drawing.Point(240, 109);
             this.lbl_Error.Name = "lbl_Error";
             this.lbl_Error.Size = new System.Drawing.Size(35, 13);
             this.lbl_Error.TabIndex = 1;
@@ -72,8 +73,9 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.lbl_Error);
             this.Controls.Add(this.txt_Input);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Main";
-            this.Text = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.ResumeLayout(false);
             this.PerformLayout();
 

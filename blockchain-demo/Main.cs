@@ -34,27 +34,19 @@ namespace blockchain_demo
 
         string abi = "";
         string bytecode = "";
+        string url = "HTTP://localhost:7545";
+
+        string python = @"C:\Users\eneskacan\anaconda3\python.exe";
+
+        bool isDeployed = false;
 
         public Main()
         {
-            InitializeComponent(); 
-            GetCoinInfo(); GetUserBalance("");
+            InitializeComponent();
         }
 
-        private void OnInput(object sender, KeyEventArgs e)
+        private void OnInputChanged(object sender, EventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
-            {
-                var input = ParseInput(txt_Input.Text);
-                txt_Input.Text = "";
-
-                StringBuilder builder = new StringBuilder(input);
-                builder.Replace("None", "'null'");
-                var objects = JObject.Parse(builder.ToString());
-
-                Execute(objects);  
-            }
-
             try
             {
                 lbl_Error.Text = ParseInput(txt_Input.Text);
@@ -65,11 +57,26 @@ namespace blockchain_demo
             }
         }
 
+        private void OnInputCompleted(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                var input = ParseInput(txt_Input.Text);
+                txt_Input.Text = "";
+
+                StringBuilder builder = new StringBuilder(input);
+                builder.Replace("None", "'null'");
+                var objects = JObject.Parse(builder.ToString());
+
+                Execute(objects);
+            }
+        }
+
         String ParseInput(string input)
         {
             // Create Process Info
             var psi = new ProcessStartInfo();
-            psi.FileName = @"C:\Users\eneskacan\anaconda3\python.exe";
+            psi.FileName = python;
 
             // Provide script and arguments
             var script = string.Format("{0}lib\\parse_string.py", Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\")));
@@ -137,8 +144,7 @@ namespace blockchain_demo
                     break;
 
                 case "transfer":
-                    Transfer(parameters.GetValue("coinname").ToString(), parameters.GetValue("amount").ToString(),
-                        parameters.GetValue("sender").ToString(), parameters.GetValue("receiver").ToString());
+                    Transfer(parameters.GetValue("amount").ToString(), parameters.GetValue("sender").ToString(), parameters.GetValue("receiver").ToString());
                     break;
 
                 case "exit":
@@ -166,6 +172,7 @@ namespace blockchain_demo
         void SelectCoin(String coinname)
         {
             selected = coinname;
+            GetCoinInfo();
         }
 
         void SetTotalAmount(String coinname, string amount)
@@ -223,6 +230,8 @@ namespace blockchain_demo
                 process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                 process.Start();
                 process.WaitForExit();
+                isDeployed = true;
+                GetCoinInfo();
                 MessageBox.Show("Contracts are deployed successfuly!");
             }
             catch (Exception ex)
@@ -231,94 +240,121 @@ namespace blockchain_demo
             }
         }
 
+        void SetBase()
+        {
+            users.Add("base", "0x6953ebf1222Dab5dfD3C17F5BeC3E96119Bd27CA");
+        }
+
         void CreateUser(String username)
         {
+            users.Add(username, CreateNewEthereumAddressAsync("pass"));
+        }
 
+        public String CreateNewEthereumAddressAsync(string password)
+        {
+            Web3 web3 = new Web3(url);
+
+            var address = web3.Personal.NewAccount.SendRequestAsync(password);
+            address.Wait();
+
+            return address.Result.ToString();
         }
 
         private void SetUserBalance(string username, string amount)
         {
-            throw new NotImplementedException();
+            Web3 web3 = new Web3(url);
+
+            Transfer(amount, "base", username);
         }
 
         async void GetUserBalance(string username)
         {
-            string url = "HTTP://localhost:7545";
-
             Web3 web3 = new Web3(url);
             Contract contract = web3.Eth.GetContract(abi, bytecode);
 
-            object[] param = new object[1] { "0x4820c027A5B18Df571b69942b17B8Fb21C055824" };
+            var getUserAtIndex = contract.GetFunction("getBalance");
+            var result = getUserAtIndex.CallAsync<BigInteger>(users[username]);
+            result.Wait();
 
-            var balance = await web3.Eth.GetBalance.SendRequestAsync("0x320C80215d32a62a4d97B830d3F57D0bF1717192");
-            var etherAmount = Web3.Convert.FromWei(balance.Value);
-            MessageBox.Show(etherAmount.ToString());
+            MessageBox.Show($"Total balance of {username} is {result.Result.ToString()}");            
         }
 
-        private void Transfer(string coinname, string amount, string sender, string receiver)
+        private void Transfer(string amount, string sender, string receiver)
         {
-            throw new NotImplementedException();
+            Web3 web3 = new Web3(url);
+            Contract contract = web3.Eth.GetContract(abi, bytecode);
+
+            HexBigInteger gas = new HexBigInteger(new BigInteger(400000));
+            HexBigInteger value = new HexBigInteger(new BigInteger(0));
+            Task<string> castVoteFunction = contract.GetFunction("sendCoin").SendTransactionAsync(users[sender].ToString(), gas, value, users[receiver], Int32.Parse(amount));
+            castVoteFunction.Wait();
         }
 
         private void Exit()
         {
-            throw new NotImplementedException();
+            Environment.Exit(0);
         }
 
         void GetCoinInfo()
         {
-            directory = @"C:\Users\eneskacan\Desktop\deployable";
-            string file = @"\build\contracts\ecoin.json";
-
-            // Create Process Info
-            var psi = new ProcessStartInfo();
-            psi.FileName = @"C:\Users\eneskacan\anaconda3\python.exe";
-
-            // Provide script and arguments
-            var script = string.Format("{0}lib\\get_coin_info.py", Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\")));
-            psi.Arguments = $"\"{script}\" \"{directory}\" \"{file}\"";
-
-            // Process configuration
-            psi.UseShellExecute = false;
-            psi.CreateNoWindow = true;
-            psi.RedirectStandardOutput = true;
-            psi.RedirectStandardError = true;
-
-            // Execute process and get output
-            var errors = "";
-            var output = "";
-
-            using (var process = Process.Start(psi))
+            //test
+            isDeployed = true;
+            if(isDeployed)
             {
-                string standard_output;
-                while ((standard_output = process.StandardOutput.ReadLine()) != null)
+                //string file = @"\build\contracts\" + selected + ".json";
+                string file = @"\build\contracts\" + "Enes" + ".json";
+                directory = @"C:\Users\eneskacan\Desktop\deployable";
+
+                // Create Process Info
+                var psi = new ProcessStartInfo();
+                psi.FileName = python;
+
+                // Provide script and arguments
+                var script = string.Format("{0}lib\\get_coin_info.py", Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\")));
+                psi.Arguments = $"\"{script}\" \"{directory}\" \"{file}\"";
+
+                // Process configuration
+                psi.UseShellExecute = false;
+                psi.CreateNoWindow = true;
+                psi.RedirectStandardOutput = true;
+                psi.RedirectStandardError = true;
+
+                // Execute process and get output
+                var errors = "";
+                var output = "";
+
+                using (var process = Process.Start(psi))
                 {
-                    if(output.Length == 0)
+                    string standard_output;
+                    while ((standard_output = process.StandardOutput.ReadLine()) != null)
                     {
-                        output = standard_output;
-                    }
-                    else if (bytecode.Length == 0)
-                    {
-                        bytecode = standard_output;
-                    }
-                    else
-                    {
-                        break;
+                        if (output.Length == 0)
+                        {
+                            output = standard_output;
+                        }
+                        else if (bytecode.Length == 0)
+                        {
+                            bytecode = standard_output;
+                        }
+                        else
+                        {
+                            break;
+                        }
                     }
                 }
+
+                if (errors.Length != 0)
+                {
+                    throw new Exception(errors);
+                }
+
+                StringBuilder builder = new StringBuilder(output);
+                builder.Replace("None", "'null'");
+                builder.Replace("False", "false");
+                builder.Replace("True", "true");
+
+                abi = JArray.Parse(builder.ToString()).ToString();
             }
-
-            if (errors.Length != 0)
-            {
-                throw new Exception(errors);
-            }
-
-            StringBuilder builder = new StringBuilder(output);
-            builder.Replace("None", "'null'");
-            builder.Replace("False", "false");
-            builder.Replace("True", "true");
-
-            abi = JArray.Parse(builder.ToString()).ToString();
         }
     }
 }
