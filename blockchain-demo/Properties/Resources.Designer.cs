@@ -127,6 +127,20 @@ namespace blockchain_demo.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CREATE COIN &lt;coinname&gt; (creates a new coin)
+        ///SET TOTAL AMOUNT AS &lt;value&gt; (sets coin&apos;s total amount)
+        ///DEPLOY PROJECT (deploys project)
+        ///CREATE USER &lt;username&gt; (creates a user)
+        ///SET BALANCE OF &lt;username&gt; AS &lt;value&gt; (sets user&apos;s balance)
+        ///GET BALANCE OF &lt;username&gt; (returns balance of the user).
+        /// </summary>
+        public static string help__message {
+            get {
+                return ResourceManager.GetString("help_ message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to var Migrations = artifacts.require(&quot;./Migrations.sol&quot;);
         ///
         ///module.exports = function(deployer) {

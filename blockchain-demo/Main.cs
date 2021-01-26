@@ -77,7 +77,11 @@ namespace blockchain_demo
         {
             if (e.KeyCode == Keys.Enter)
             {
-                var input = ParseInput(txt_Input.Text);
+                var input = "";
+
+                try { input = ParseInput(txt_Input.Text); }
+                catch (Exception exception) { return; }
+                
                 txt_Input.Text = "";
 
                 StringBuilder builder = new StringBuilder(input);
@@ -327,7 +331,7 @@ namespace blockchain_demo
 
         private void Help()
         {
-            lbl_Error.Text = "Help message here :)";
+            lbl_Error.Text = Resources.help__message;
         }
 
         void GetCoinInfo()

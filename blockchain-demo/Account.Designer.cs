@@ -40,7 +40,7 @@
             // 
             this.lbl_Username.AutoSize = true;
             this.lbl_Username.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.lbl_Username.Location = new System.Drawing.Point(7, 10);
+            this.lbl_Username.Location = new System.Drawing.Point(3, 8);
             this.lbl_Username.Name = "lbl_Username";
             this.lbl_Username.Size = new System.Drawing.Size(83, 20);
             this.lbl_Username.TabIndex = 45;
@@ -50,7 +50,7 @@
             // 
             this.lbl_Balance.AutoSize = true;
             this.lbl_Balance.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F);
-            this.lbl_Balance.Location = new System.Drawing.Point(96, 16);
+            this.lbl_Balance.Location = new System.Drawing.Point(100, 12);
             this.lbl_Balance.Name = "lbl_Balance";
             this.lbl_Balance.Size = new System.Drawing.Size(35, 13);
             this.lbl_Balance.TabIndex = 46;
@@ -67,7 +67,7 @@
             this.btn_Copy.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.btn_Copy.ForeColor = System.Drawing.Color.Transparent;
             this.btn_Copy.HoverState.Parent = this.btn_Copy;
-            this.btn_Copy.Location = new System.Drawing.Point(137, 10);
+            this.btn_Copy.Location = new System.Drawing.Point(139, 3);
             this.btn_Copy.Name = "btn_Copy";
             this.btn_Copy.ShadowDecoration.Parent = this.btn_Copy;
             this.btn_Copy.Size = new System.Drawing.Size(37, 27);
@@ -83,7 +83,7 @@
             this.Controls.Add(this.lbl_Balance);
             this.Controls.Add(this.lbl_Username);
             this.Name = "Account";
-            this.Size = new System.Drawing.Size(176, 44);
+            this.Size = new System.Drawing.Size(176, 32);
             this.ResumeLayout(false);
             this.PerformLayout();
 

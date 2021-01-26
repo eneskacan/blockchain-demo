@@ -166,6 +166,14 @@ module.exports = function(deployer) {
   deployer.deploy(#coin_name#);
 };</value>
   </data>
+  <data name="help_ message" xml:space="preserve">
+    <value>CREATE COIN &lt;coinname&gt; (creates a new coin)
+SET TOTAL AMOUNT AS &lt;value&gt; (sets coin's total amount)
+DEPLOY PROJECT (deploys project)
+CREATE USER &lt;username&gt; (creates a user)
+SET BALANCE OF &lt;username&gt; AS &lt;value&gt; (sets user's balance)
+GET BALANCE OF &lt;username&gt; (returns balance of the user)</value>
+  </data>
   <data name="initial_migration" xml:space="preserve">
     <value>var Migrations = artifacts.require("./Migrations.sol");
 
